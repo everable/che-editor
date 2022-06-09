@@ -1,27 +1,32 @@
-version: 1.0.0
-editors:
-  - id: eclipse/che-theia/next
-    publisher: eclipse
-    title: Eclipse Theia development version.
-    displayName: theia-ide
-    description: Eclipse Theia, get the latest release each day.
-    icon: https://raw.githubusercontent.com/theia-ide/theia/master/logo/theia-logo-no-text-black.svg?sanitize=true
-    repository: https://github.com/eclipse-che/che-theia
-    firstPublicationDate: "2021-01-01"
-    endpoints:
-      - name: "theia"
-        public: true
-        targetPort: 3100
-        attributes:
-          protocol: http
-          type: ide
-          secure: true
-          cookiesAuthEnabled: true
-          discoverable: false
-    containers:
-      - name: theia-ide
-        image: "quay.io/eclipse/che-theia:7.41.2"
-        mountSources: true
-        ports:
-          - exposedPort: 3100
-        memoryLimit: "512M"
+apiVersion: v2
+publisher: cdr
+name: code-server
+version: latest
+type: Che Editor
+displayName: code-server
+title: Visual Studio Code - Web (code-server)
+description: An open source distribution of Visual Studio Code as cloud IDE
+icon: /images/default.png
+category: Editor
+repository: 'https://github.com/cdr/code-server'
+firstPublicationDate: '2020-11-03'
+latestUpdateDate: '2021-08-11'
+spec:  
+  endpoints:
+    - name: code-server
+      targetPort: 8080      
+      attributes:
+        type: ide
+        protocol: http
+      public: true
+  containers:
+    - image: 'index.docker.io/codercom/code-server:latest'
+      mountSources: true
+      memoryLimit: 1024M
+      volumes:
+        - name: user-data
+          mountPath: /home/coder/.local/share/code-server
+      name: code-server
+      ports:
+        - exposedPort: 8080
+  initContainers: []
