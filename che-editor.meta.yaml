@@ -1,7 +1,7 @@
 version: 1.0.0
-publisher: eclipse
 editors:
   - id: eclipse/che-theia/next
+    publisher: eclipse
     title: Eclipse Theia development version.
     displayName: theia-ide
     description: Eclipse Theia, get the latest release each day.
