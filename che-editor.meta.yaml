@@ -1,32 +1,69 @@
 apiVersion: v2
-publisher: cdr
-name: code-server
-version: latest
+publisher: eclipse
+name: che-theia
+version: next
 type: Che Editor
-displayName: code-server
-title: Visual Studio Code - Web (code-server)
-description: An open source distribution of Visual Studio Code as cloud IDE
-icon: /images/default.png
+displayName: theia-ide
+title: Eclipse Theia DevSecOps Academy.
+description: Eclipse Theia, get the latest release each day.
+icon: https://raw.githubusercontent.com/theia-ide/theia/master/logo/theia-logo-no-text-black.svg?sanitize=true
 category: Editor
-repository: 'https://github.com/cdr/code-server'
-firstPublicationDate: '2020-11-03'
-latestUpdateDate: '2021-08-11'
-spec:  
+repository: https://github.com/eclipse/che-theia
+firstPublicationDate: "2019-03-07"
+spec:
   endpoints:
-    - name: code-server
-      targetPort: 8080      
-      attributes:
-        type: ide
-        protocol: http
+   -  name: "theia"
       public: true
+      targetPort: 3100
+      attributes:
+        protocol: http
+        type: ide
+        secure: true
+        cookiesAuthEnabled: true
+        discoverable: false
+   -  name: "theia-dev"
+      public: true
+      targetPort: 3130
+      attributes:
+        protocol: http
+        type: ide-dev
+        discoverable: false
+   -  name: "theia-redirect-1"
+      public: true
+      targetPort: 13131
+      attributes:
+        protocol: http
+        discoverable: false
+   -  name: "theia-redirect-2"
+      public: true
+      targetPort: 13132
+      attributes:
+        protocol: http
+        discoverable: false
+   -  name: "theia-redirect-3"
+      public: true
+      targetPort: 13133
+      attributes:
+        protocol: http
+        discoverable: false
   containers:
-    - image: 'index.docker.io/codercom/code-server:latest'
-      mountSources: true
-      memoryLimit: 1024M
-      volumes:
-        - name: user-data
-          mountPath: /home/coder/.local/share/code-server
-      name: code-server
-      ports:
-        - exposedPort: 8080
-  initContainers: []
+   - name: theia-ide
+     image: "docker.io/devsecopsacademy/che-theia:7.41.2"
+     env:
+         - name: THEIA_PLUGINS
+           value: local-dir:///plugins
+         - name: HOSTED_PLUGIN_HOSTNAME
+           value: 0.0.0.0
+         - name: HOSTED_PLUGIN_PORT
+           value: 3130
+     volumes:
+         - mountPath: "/plugins"
+           name: plugins
+     mountSources: true
+     ports:
+         - exposedPort: 3100
+         - exposedPort: 3130
+         - exposedPort: 13131
+         - exposedPort: 13132
+         - exposedPort: 13133
+     memoryLimit: "512M"
