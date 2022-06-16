@@ -48,7 +48,7 @@ spec:
       discoverable: false
   containers:
   - name: theia-ide
-    image: eclipse/che-theia:next
+    image: devsecopsacademy/che-theia:7.41.2
     env:
     - name: THEIA_PLUGINS
       value: local-dir:///plugins
